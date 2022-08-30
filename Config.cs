@@ -8,7 +8,7 @@ namespace IdentityServer
 {
     public static class Config
     {
-        public static IEnumerable<IdentityResource> IdentityResources    => // Khai báo các API  cần được bảo vệ
+        public static IEnumerable<IdentityResource> IdentityResources    =>
             new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
@@ -16,7 +16,7 @@ namespace IdentityServer
                 new IdentityResources.Email(),
             };
 
-        public static IEnumerable<ApiScope> ApiScopes =>
+        public static IEnumerable<ApiScope> ApiScopes =>                         // Khai báo các API  cần được bảo vệ
             new ApiScope[]
             {
                 new ApiScope("scope1"),
@@ -40,7 +40,8 @@ namespace IdentityServer
                     { 
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email
+                        IdentityServerConstants.StandardScopes.Email,
+                        "roles"
                     }
                 },
 
@@ -50,6 +51,9 @@ namespace IdentityServer
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
+                    //AllowedGrantTypes = GrantTypes.Hybrid,
+                    //RequirePkce = false,
+                    //AllowAccessTokensViaBrowser = true,
                     RedirectUris =           { "https://localhost:44321/signin-oidc" },
                     PostLogoutRedirectUris = { "https://localhost:44321/" },
                     FrontChannelLogoutUri =    "https://localhost:44321/signout-oidc",
@@ -58,8 +62,45 @@ namespace IdentityServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email
+                        IdentityServerConstants.StandardScopes.Email,
+                        "role"
+
                     }
+                },
+
+                new Client
+                {
+                    ClientId = "umbraco-backoffice3",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    //AllowedGrantTypes = GrantTypes.Hybrid,
+                    //RequirePkce = false,
+                    //AllowAccessTokensViaBrowser = true,
+                    RedirectUris =           { "https://localhost:44313/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44313/" },
+                    FrontChannelLogoutUri =    "https://localhost:44313/signout-oidc",
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "role"
+
+                    }
+                },
+
+                new Client
+                {
+                    ClientId = "Umbraco-SSO",
+                    ClientName = "Umbraco membership area",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RedirectUris = { "https://localhost:44300/signin-oidc" },
+                    AllowedScopes = { "openid", "profile", "email" },
+                    RequirePkce = true
                 }
             };
             
